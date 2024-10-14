@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pedidos;
+use App\Models\ConteudoCarrinho;
 use Illuminate\Http\Request;
 
-class PedidosController extends Controller
+class ConteudoCarrinhoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class PedidosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pedidos  $pedidos
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function show(Pedidos $pedidos)
+    public function show(ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
@@ -52,10 +52,10 @@ class PedidosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Pedidos  $pedidos
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pedidos $pedidos)
+    public function edit(ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
@@ -64,10 +64,10 @@ class PedidosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pedidos  $pedidos
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pedidos $pedidos)
+    public function update(Request $request, ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
@@ -75,10 +75,10 @@ class PedidosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pedidos  $pedidos
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pedidos $pedidos)
+    public function destroy(ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }

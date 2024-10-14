@@ -15,6 +15,9 @@ class CreateAdministradorsTable extends Migration
     {
         Schema::create('administradors', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->unsignedBigInteger('fk_user');
+            $table->foreign('fk_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

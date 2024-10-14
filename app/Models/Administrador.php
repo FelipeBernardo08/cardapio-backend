@@ -11,5 +11,6 @@ class Administrador extends Model
 
     protected $fillable = [
         'nome',
+        'fk_user'
     ];
 }

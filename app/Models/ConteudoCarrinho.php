@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pedidos extends Model
+class ConteudoCarrinho extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'data',
+        'fk_produto',
         'fk_cliente',
-        'valor_ total'
+        'fk_carrinho',
+        'valor'
     ];
-
-    public function criarPedido(object $request): array
-    {
-        return self::create($request->all())->toArray();
-    }
 }

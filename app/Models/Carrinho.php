@@ -10,7 +10,8 @@ class Carrinho extends Model
     use HasFactory;
 
     protected $fillable = [
-        'fk_produto',
-        'fk_pedido',
+        'fk_cliente',
+        'valor_total',
+        'data'
     ];
 }

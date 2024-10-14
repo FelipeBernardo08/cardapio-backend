@@ -11,5 +11,13 @@ class Cliente extends Model
 
     protected $fillable = [
         'nome',
+        'whatsapp',
+        'cpf',
+        'end_rua',
+        'end_numero',
+        'end_cidade',
+        'end_estado',
+        'end_cep',
+        'fk_user'
     ];
 }

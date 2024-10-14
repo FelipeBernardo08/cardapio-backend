@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class userSeeder extends Seeder
+class UserTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,10 +14,13 @@ class userSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'email' => 'adm@gmail.com',
-            'password' => bcrypt('123'),
-            'fk_userType' => 1
-        ]);
+        DB::table('user_types')->insert(
+            [
+                'nome' => 'ADM',
+            ],
+            [
+                'nome' => 'Client'
+            ]
+        );
     }
 }
