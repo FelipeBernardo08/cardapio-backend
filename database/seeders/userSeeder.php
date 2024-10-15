@@ -17,7 +17,8 @@ class userSeeder extends Seeder
         DB::table('users')->insert([
             'email' => 'adm@gmail.com',
             'password' => bcrypt('123'),
-            'fk_userType' => 1
+            'fk_userType' => 1,
+            'active' => true
         ]);
     }
 }

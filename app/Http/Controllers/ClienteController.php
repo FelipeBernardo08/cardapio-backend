@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\User;
 use App\Models\Carrinho;
+use App\Mail\ConfirmarCriacaoConta;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ClienteController extends Controller
 {
@@ -29,7 +31,16 @@ class ClienteController extends Controller
                 $responseCliente = $this->cliente->criarCliente($request->nome, $responseUser['id']);
                 if (count($responseCliente) != 0) {
                     $this->carrinho->criarCarrinho($responseCliente['id']);
-                    return response()->json(['msg' => 'Sucesso!'], 200);
+                    $data = [
+                        'email' => $responseUser['email'],
+                        'id' => $responseUser['id'],
+                        //dev
+                        'url' => 'http://localhost:8000/api/confirmar-conta'
+                        //prod
+                        // 'url' => 'https://deliciasdacheiloca.com.br:8081/api/confirmar-conta'
+                    ];
+                    Mail::to($responseUser['email'])->send(new ConfirmarCriacaoConta($data, 'Confirmar Cadastro'));
+                    return response()->json(['msg' => 'Sucesso! Um e-mail foi enviado para o mesmo e-mail de cadastro, necessário confirmar cadastro para utilizar a plataforma'], 200);
                 }
                 $this->user->deleteUser($responseUser['id']);
                 return $this->error('Erro ao criar cliente.');

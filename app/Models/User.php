@@ -20,7 +20,8 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'email',
         'password',
-        'fk_userType'
+        'fk_userType',
+        'active'
     ];
 
     /**
@@ -74,5 +75,21 @@ class User extends Authenticatable implements JWTSubject
     {
         return self::where('id', $id)
             ->delete();
+    }
+
+    public function lerUsuarioPorEmail(array $credenciais): array
+    {
+        return self::where('email', $credenciais['email'])
+            ->get()
+            ->toArray();
+    }
+
+    public function ativarUsuario(int $id, string $email): bool
+    {
+        return self::where('id', $id)
+            ->where('email', $email)
+            ->update([
+                'active' => true
+            ]);
     }
 }

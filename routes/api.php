@@ -63,4 +63,6 @@ Route::get('ler-categorias-publico', [CategoriaController::class, 'lerCategoriaP
 Route::get('ler-combos-publico', [CombosController::class, 'lerCombosPublico']);
 Route::get('ler-combo/{id}', [CombosController::class, 'lerComboPorId']);
 
+//cliente
 Route::post('criar-cliente', [ClienteController::class, 'criarCliente']);
+Route::get('confirmar-conta/{id}/{email}', [AuthController::class, 'ativarCadastro']);
