@@ -16,8 +16,9 @@ class CreateCarrinhosTable extends Migration
         Schema::create('carrinhos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fk_cliente');
-            $table->float('valor_total');
+            $table->float('valor_total')->default(0);
             $table->string('data');
+            $table->boolean('comprado')->default(false);
             $table->foreign('fk_cliente')->references('id')->on('clientes');
             $table->timestamps();
         });
