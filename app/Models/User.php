@@ -61,4 +61,18 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function criarCliente(object $request): array
+    {
+        return self::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ])->toArray();
+    }
+
+    public function deleteUser(int $id): bool
+    {
+        return self::where('id', $id)
+            ->delete();
+    }
 }

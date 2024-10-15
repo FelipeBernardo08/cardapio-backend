@@ -16,10 +16,12 @@ class UserTypeSeeder extends Seeder
     {
         DB::table('user_types')->insert(
             [
-                'nome' => 'ADM',
-            ],
-            [
-                'nome' => 'Client'
+                [
+                    'nome' => 'ADM',
+                ],
+                [
+                    'nome' => 'Client'
+                ]
             ]
         );
     }

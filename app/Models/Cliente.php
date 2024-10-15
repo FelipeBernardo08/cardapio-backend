@@ -11,13 +11,21 @@ class Cliente extends Model
 
     protected $fillable = [
         'nome',
-        'whatsapp',
         'cpf',
+        'fk_user',
+        'whatsapp',
         'end_rua',
         'end_numero',
         'end_cidade',
         'end_estado',
-        'end_cep',
-        'fk_user'
+        'end_cep'
     ];
+
+    public function criarCliente(string $nome, int $idUser): array
+    {
+        return self::create([
+            'nome' => $nome,
+            'fk_user' => $idUser
+        ])->toArray();
+    }
 }
