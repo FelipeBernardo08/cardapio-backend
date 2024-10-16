@@ -17,6 +17,11 @@ class Carrinho extends Model
         'comprado'
     ];
 
+    public function conteudoCarrinho()
+    {
+        return $this->hasMany(ConteudoCarrinho::class, 'fk_carrinho');
+    }
+
     public function criarCarrinho(int $idCliente): array
     {
         date_default_timezone_set('America/Sao_Paulo');

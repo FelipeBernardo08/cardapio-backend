@@ -57,13 +57,23 @@ class AuthController extends Controller
         }
     }
 
-    public function me(): object
+    public function me(): array
     {
         try {
             $me = auth()->user();
-            return $me;
+            if ($me['fk_userType'] == 1) {
+                $responseUserAdm = $this->user->getUserAdm($me['id']);
+                if (count($responseUserAdm) != 0) {
+                    return $responseUserAdm;
+                }
+            }
+            $responseUserCliente = $this->user->getUserCliente($me['id']);
+            if (count($responseUserCliente) != 0) {
+                return $responseUserCliente;
+            }
+            return [];
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 404);
+            return [];
         }
     }
 }

@@ -22,7 +22,7 @@ class ProdutoController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->produto->criarProduto($request);
                 if (count($response) != 0) {
                     return $this->responseOk($response);
@@ -65,7 +65,7 @@ class ProdutoController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->produto->atualizarProduto($id, $request);
                 if ($response) {
                     return $this->responseOk($response);
@@ -82,7 +82,7 @@ class ProdutoController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->produto->desativarProduto($id);
                 if ($response) {
                     return $this->responseOk($response);
@@ -99,7 +99,7 @@ class ProdutoController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->produto->ativarProduto($id);
                 if ($response) {
                     return $this->responseOk($response);

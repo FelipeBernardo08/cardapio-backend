@@ -16,4 +16,20 @@ class ConteudoCarrinho extends Model
         'quantidade',
         'valor'
     ];
+
+    public function produtos()
+    {
+        return $this->belongsTo(Produto::class, 'fk_produto');
+    }
+
+    public function criarConteudoDoCarrinho(object $request, int $idCLiente, int $idCarrinho): array
+    {
+        return self::create([
+            'fk_produto' => $request->fk_produto,
+            'fk_cliente' => $idCLiente,
+            'fk_carrinho' => $idCarrinho,
+            'quantidade' => $request->quantidade,
+            'valor' => $request->valor
+        ])->toArray();
+    }
 }

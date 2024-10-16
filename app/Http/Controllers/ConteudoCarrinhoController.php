@@ -3,83 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\ConteudoCarrinho;
+use App\Http\Controllers\AuthController;
+use Exception;
 use Illuminate\Http\Request;
 
 class ConteudoCarrinhoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $conteudo;
+    private $auth;
+
+    public function __construct(ConteudoCarrinho $conteudoCarrinho, AuthController $authController)
     {
-        //
+        $this->conteudo = $conteudoCarrinho;
+        $this->auth = $authController;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function criarConteudoDoCarrinho(Request $request): object
     {
-        //
+        try {
+            $me = $this->auth->me();
+            $responseConteudo = $this->conteudo->criarConteudoDoCarrinho($request, $me[0]['cliente'][0]['id'], $me[0]['cliente'][0]['carrinho'][0]['id']);
+            //atualizar valor do carrinho
+            if (count($responseConteudo) != 0) {
+                return $this->responseOk($responseConteudo);
+            }
+            return $this->error('Erro ao inserir conteudo no carrinho, tente novamente mais tarde!');
+        } catch (Exception $e) {
+            return $this->error($e);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function responseOk($response): object
     {
-        //
+        return response()->json($response, 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ConteudoCarrinho $conteudoCarrinho)
+    public function error(string $message): object
     {
-        //
+        return response()->json(['error' => $message], 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ConteudoCarrinho $conteudoCarrinho)
+    public function naoAutorizado(): object
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ConteudoCarrinho $conteudoCarrinho)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ConteudoCarrinho $conteudoCarrinho)
-    {
-        //
+        return response()->json(['error' => 'Não autorizado!'], 403);
     }
 }

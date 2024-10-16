@@ -22,7 +22,7 @@ class CategoriaController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->categoria->criarCategoria($request);
                 if (count($response) != 0) {
                     return $this->responseOk($response);
@@ -78,7 +78,7 @@ class CategoriaController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->categoria->atualizarCategoria($id, $request);
                 if ($response) {
                     return response()->json(['msg' => 'Registro atualizado com sucesso!'], 200);

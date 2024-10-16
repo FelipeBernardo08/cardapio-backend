@@ -23,7 +23,7 @@ class CombosController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->combos->criarCombo($request);
                 if (count($response) != 0) {
                     return $this->responseOk($response);
@@ -79,7 +79,7 @@ class CombosController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->combos->updateCombo($id, $request);
                 if ($response) {
                     return $this->responseOk($response);
@@ -96,7 +96,7 @@ class CombosController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->combos->ativarCombo($id);
                 if ($response) {
                     return $this->responseOk($response);
@@ -113,7 +113,7 @@ class CombosController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->combos->desativarCombo($id);
                 if ($response) {
                     return $this->responseOk($response);

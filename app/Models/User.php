@@ -63,6 +63,16 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function adm()
+    {
+        return $this->hasMany(Administrador::class, 'fk_user');
+    }
+
+    public function cliente()
+    {
+        return $this->hasMany(Cliente::class, 'fk_user');
+    }
+
     public function criarCliente(object $request): array
     {
         return self::create([
@@ -99,5 +109,24 @@ class User extends Authenticatable implements JWTSubject
             ->update([
                 'password' => bcrypt($request->password)
             ]);
+    }
+
+    public function getUserAdm(int $idUser): array
+    {
+        return self::where('id', $idUser)
+            ->with('adm')
+            ->get()
+            ->toArray();
+    }
+
+    public function getUserCliente(int $idUser): array
+    {
+        return self::where('id', $idUser)
+            ->with('cliente')
+            ->with('cliente.carrinho')
+            ->with('cliente.carrinho.conteudoCarrinho')
+            ->with('cliente.carrinho.conteudoCarrinho.produtos')
+            ->get()
+            ->toArray();
     }
 }
