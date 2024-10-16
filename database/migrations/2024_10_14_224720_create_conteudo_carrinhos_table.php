@@ -19,6 +19,7 @@ class CreateConteudoCarrinhosTable extends Migration
             $table->unsignedBigInteger('fk_carrinho');
             $table->unsignedBigInteger('fk_cliente');
             $table->float('valor');
+            $table->integer('quantidade');
             $table->foreign('fk_produto')->references('id')->on('produtos');
             $table->foreign('fk_carrinho')->references('id')->on('carrinhos');
             $table->foreign('fk_cliente')->references('id')->on('clientes');

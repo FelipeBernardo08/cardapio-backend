@@ -13,6 +13,7 @@ class ConteudoCarrinho extends Model
         'fk_produto',
         'fk_cliente',
         'fk_carrinho',
+        'quantidade',
         'valor'
     ];
 }
