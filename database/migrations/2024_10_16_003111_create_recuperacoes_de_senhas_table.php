@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePedidosTable extends Migration
+class CreateRecuperacoesDeSenhasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreatePedidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('pedidos', function (Blueprint $table) {
+        Schema::create('recuperacoes_de_senhas', function (Blueprint $table) {
             $table->id();
+            $table->string('email')->unique();
+            $table->string('token_confirmacao');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreatePedidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pedidos');
+        Schema::dropIfExists('recuperacoes_de_senhas');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCarrinhosTable extends Migration
+class CreateAdministradorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateCarrinhosTable extends Migration
      */
     public function up()
     {
-        Schema::create('carrinhos', function (Blueprint $table) {
+        Schema::create('administradors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fk_cliente');
-            $table->float('valor_total')->default(0);
-            $table->string('data');
-            $table->boolean('comprado')->default(false);
-            $table->foreign('fk_cliente')->references('id')->on('clientes');
+            $table->string('nome');
+            $table->unsignedBigInteger('fk_user');
+            $table->foreign('fk_user')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateCarrinhosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carrinhos');
+        Schema::dropIfExists('administradors');
     }
 }

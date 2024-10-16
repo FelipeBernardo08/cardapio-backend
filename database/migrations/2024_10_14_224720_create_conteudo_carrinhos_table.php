@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVendasTable extends Migration
+class CreateConteudoCarrinhosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateVendasTable extends Migration
      */
     public function up()
     {
-        Schema::create('vendas', function (Blueprint $table) {
+        Schema::create('conteudo_carrinhos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('fk_produto');
             $table->unsignedBigInteger('fk_carrinho');
             $table->unsignedBigInteger('fk_cliente');
-            $table->float('valor_total');
-            $table->string('forma_pagamento');
-            $table->foreign('fk_cliente')->references('id')->on('clientes');
+            $table->float('valor');
+            $table->integer('quantidade');
+            $table->foreign('fk_produto')->references('id')->on('produtos');
             $table->foreign('fk_carrinho')->references('id')->on('carrinhos');
+            $table->foreign('fk_cliente')->references('id')->on('clientes');
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateVendasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendas');
+        Schema::dropIfExists('conteudo_carrinhos');
     }
 }

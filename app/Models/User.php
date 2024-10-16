@@ -18,9 +18,10 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'fk_userType',
+        'active'
     ];
 
     /**
@@ -60,5 +61,43 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function criarCliente(object $request): array
+    {
+        return self::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ])->toArray();
+    }
+
+    public function deleteUser(int $id): bool
+    {
+        return self::where('id', $id)
+            ->delete();
+    }
+
+    public function lerUsuarioPorEmail(array $credenciais): array
+    {
+        return self::where('email', $credenciais['email'])
+            ->get()
+            ->toArray();
+    }
+
+    public function ativarUsuario(int $id, string $email): bool
+    {
+        return self::where('id', $id)
+            ->where('email', $email)
+            ->update([
+                'active' => true
+            ]);
+    }
+
+    public function trocarSenhaRecuperacao(object $request): bool
+    {
+        return self::where('email', $request->email)
+            ->update([
+                'password' => bcrypt($request->password)
+            ]);
     }
 }

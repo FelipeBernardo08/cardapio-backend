@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/confirmar-conta', function () {
+    return view('ConfirmarEmail');
+});
+
+Route::get('/agradecimento', function () {
+    return view('Agradecimento');
+})->name('agradecimento');
+
+Route::get('/recuperar-senha', function () {
+    return view('RecuperarSenha');
 });

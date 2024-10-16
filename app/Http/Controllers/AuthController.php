@@ -21,12 +21,19 @@ class AuthController extends Controller
     public function login(Request $request): object
     {
         $credentials = $request->all(['email', 'password']);
-        $token = auth('api')->attempt($credentials);
-        if ($token) {
-            return response()->json($token, 200);
-        } else {
-            return response()->json(['error' => 'Registro nao encontrado!'], 404);
+        $responseUserActive = $this->user->lerUsuarioPorEmail($credentials);
+        if (count($responseUserActive) != 0) {
+            if ($responseUserActive[0]['active']) {
+                $token = auth('api')->attempt($credentials);
+                if ($token) {
+                    return response()->json($token, 200);
+                } else {
+                    return response()->json(['error' => 'Registro nao encontrado!'], 404);
+                }
+            }
+            return response()->json(['error' => 'Cadastro não ativo'], 404);
         }
+        return response()->json(['error' => 'Credenciais não encontradas'], 404);
     }
 
     public function logout(): object

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clientes;
+use App\Models\ConteudoCarrinho;
 use Illuminate\Http\Request;
 
-class ClientesController extends Controller
+class ConteudoCarrinhoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class ClientesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function show(Clientes $clientes)
+    public function show(ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
@@ -52,10 +52,10 @@ class ClientesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function edit(Clientes $clientes)
+    public function edit(ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
@@ -64,10 +64,10 @@ class ClientesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clientes $clientes)
+    public function update(Request $request, ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
@@ -75,10 +75,10 @@ class ClientesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\ConteudoCarrinho  $conteudoCarrinho
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clientes $clientes)
+    public function destroy(ConteudoCarrinho $conteudoCarrinho)
     {
         //
     }
