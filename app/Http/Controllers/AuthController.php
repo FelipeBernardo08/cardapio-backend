@@ -66,17 +66,4 @@ class AuthController extends Controller
             return response()->json(['error' => $e->getMessage()], 404);
         }
     }
-
-    public function ativarCadastro(int $id, string $email): object
-    {
-        try {
-            $responseUser = $this->user->ativarUsuario($id, $email);
-            if ($responseUser) {
-                return redirect()->route('agradecimento');
-            }
-            return response()->json(['error' => 'Cadastro não pode ser ativo!'], 404);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Erro ao ativar cadastro', 'erro' => $e], 404);
-        }
-    }
 }

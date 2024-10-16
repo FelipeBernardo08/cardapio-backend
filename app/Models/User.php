@@ -92,4 +92,12 @@ class User extends Authenticatable implements JWTSubject
                 'active' => true
             ]);
     }
+
+    public function trocarSenhaRecuperacao(object $request): bool
+    {
+        return self::where('email', $request->email)
+            ->update([
+                'password' => bcrypt($request->password)
+            ]);
+    }
 }

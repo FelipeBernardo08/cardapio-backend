@@ -65,4 +65,6 @@ Route::get('ler-combo/{id}', [CombosController::class, 'lerComboPorId']);
 
 //cliente
 Route::post('criar-cliente', [ClienteController::class, 'criarCliente']);
-Route::get('confirmar-conta/{id}/{email}', [AuthController::class, 'ativarCadastro']);
+Route::get('confirmar-conta/{id}/{email}', [ClienteController::class, 'ativarCadastro']);
+Route::post('recuperar-senha', [ClienteController::class, 'recuperarSenha']);
+Route::post('trocar-senha-token', [ClienteController::class, 'trocarSenhaComToken']);

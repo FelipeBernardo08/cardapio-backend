@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\User;
 use App\Models\Carrinho;
+use App\Models\RecuperacoesDeSenha;
 use App\Mail\ConfirmarCriacaoConta;
+use App\Mail\RecuperarSenha;
+use App\Http\Controllers\AuthController;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -15,12 +18,16 @@ class ClienteController extends Controller
     private $cliente;
     private $user;
     private $carrinho;
+    private $recuperacao;
+    private $auth;
 
-    public function __construct(Cliente $clientes, User $users, Carrinho $carrinhos)
+    public function __construct(Cliente $clientes, User $users, Carrinho $carrinhos, RecuperacoesDeSenha $recuperacaoSenha, AuthController $authController)
     {
         $this->cliente = $clientes;
         $this->user = $users;
         $this->carrinho = $carrinhos;
+        $this->recuperacao = $recuperacaoSenha;
+        $this->auth = $authController;
     }
 
     public function criarCliente(Request $request): object
@@ -46,6 +53,54 @@ class ClienteController extends Controller
                 return $this->error('Erro ao criar cliente.');
             }
             return $this->error('Erro ao criar usuario.');
+        } catch (Exception $e) {
+            return $this->error($e);
+        }
+    }
+
+    public function ativarCadastro(int $id, string $email): object
+    {
+        try {
+            $responseUser = $this->user->ativarUsuario($id, $email);
+            if ($responseUser) {
+                return redirect()->route('agradecimento');
+            }
+            return $this->error('Cadastro não pode ser ativo!');
+        } catch (Exception $e) {
+            return $this->error($e);
+        }
+    }
+
+    public function recuperarSenha(Request $request): object
+    {
+        try {
+            $responseRecuperacao = $this->recuperacao->criarRecuperacao($request);
+            if (count($responseRecuperacao) != 0) {
+                $data = [
+                    'token' => $responseRecuperacao['token_confirmacao']
+                ];
+                Mail::to($request->email)->send(new RecuperarSenha($data, 'Recuperar Senha'));
+                return response()->json(['msg' => 'Sucesso! Foi enviado ao seu e-mail um token para recuperação de senha.'], 200);
+            }
+            return $this->error('Erro ao solicitar recuperação, tente novamente mais tarde!');
+        } catch (Exception $e) {
+            return $this->error($e);
+        }
+    }
+
+    public function trocarSenhaComToken(Request $request): object
+    {
+        try {
+            $responseTokenConfirmacao = $this->recuperacao->lerConfirmacaoPorEmail($request);
+            if ($request->token == $responseTokenConfirmacao[0]['token_confirmacao']) {
+                $responseUserChangePassword = $this->user->trocarSenhaRecuperacao($request);
+                if ($responseUserChangePassword) {
+                    $this->recuperacao->apagarRecuperacaoAposTrocaDeSenha($responseTokenConfirmacao[0]['id']);
+                    return response()->json(['msg' => 'Senha atualizada com sucesso!'], 200);
+                }
+                return $this->error('Erro ao atualizar senha, tente novamente mais tarde!');
+            }
+            return $this->error('Token inválido');
         } catch (Exception $e) {
             return $this->error($e);
         }
