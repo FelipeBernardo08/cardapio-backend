@@ -51,6 +51,27 @@ class ConteudoCarrinhoController extends Controller
         }
     }
 
+    public function removerConteudoCarrinho(int $id): object
+    {
+        try {
+            $me = $this->auth->me();
+            $idCliente = $me[0]['cliente'][0]['id'];
+            $idCarrinho = $me[0]['cliente'][0]['carrinho'][0]['id'];
+            $responseConteudoCarrinho = $this->conteudo->removerConteudoCarrinho($id, $idCliente, $idCarrinho);
+            if ($responseConteudoCarrinho) {
+                $itensCarrinho = $this->conteudo->lerProutosPorIdCarrinho($idCarrinho);
+                if (count($itensCarrinho) != 0) {
+                    $valorProdutosCarrinho = $this->somarValorProdutosCarrinho($itensCarrinho);
+                    $this->carrinho->atualizarValorCarrinho($idCarrinho, $idCliente, $valorProdutosCarrinho);
+                }
+                return response()->json(['msg' => 'Conteudo apagado com sucesso!'], 200);
+            }
+            return $this->error('Erro ao apagar conteudo, tente novamente mais tarde!');
+        } catch (Exception $e) {
+            return $this->error($e);
+        }
+    }
+
     public function somarValorProdutosCarrinho(array $produtos)
     {
         $valor = 0;

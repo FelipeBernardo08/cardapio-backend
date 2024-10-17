@@ -53,6 +53,7 @@ Route::middleware('jwt.auth')->group(function () {
 
     //compras
     Route::post('inserir-produto-carrinho', [ConteudoCarrinhoController::class, 'criarConteudoDoCarrinho']);
+    Route::delete('apagar-produto-carrinho/{id}', [ConteudoCarrinhoController::class, 'removerConteudoCarrinho']);
 });
 
 //login
