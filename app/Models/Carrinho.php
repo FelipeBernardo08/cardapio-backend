@@ -40,4 +40,13 @@ class Carrinho extends Model
         }
         return [];
     }
+
+    public function atualizarValorCarrinho(int $id, int $idCliente, $valor): bool
+    {
+        return self::where('id', $id)
+            ->where('fk_cliente', $idCliente)
+            ->update([
+                'valor_total' => $valor
+            ]);
+    }
 }
