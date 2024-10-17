@@ -57,6 +57,16 @@ class Produto extends Model
             ]);
     }
 
+    public function lerProdutoPorIdAtivo(int $id): array
+    {
+        return self::where('id', $id)
+            ->where('active', true)
+            ->with('categoria')
+            ->get()
+            ->toArray();
+    }
+
+
     public function desativarProduto(int $id): bool
     {
         return self::where('id', $id)
