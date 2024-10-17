@@ -32,4 +32,11 @@ class ConteudoCarrinho extends Model
             'valor' => $request->valor
         ])->toArray();
     }
+
+    public function lerProutosPorIdCarrinho(int $id): array
+    {
+        return self::where('fk_carrinho', $id)
+            ->get()
+            ->toArray();
+    }
 }
