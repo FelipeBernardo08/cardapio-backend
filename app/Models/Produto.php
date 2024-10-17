@@ -47,16 +47,6 @@ class Produto extends Model
             ->toArray();
     }
 
-    public function atualizarProduto(int $id, object $request): bool
-    {
-        return self::where('id', $id)
-            ->update([
-                'titulo' => $request->titulo,
-                'descricao' => $request->descricao,
-                'valor' => $request->valor
-            ]);
-    }
-
     public function lerProdutoPorIdAtivo(int $id): array
     {
         return self::where('id', $id)
@@ -66,6 +56,16 @@ class Produto extends Model
             ->toArray();
     }
 
+
+    public function atualizarProduto(int $id, object $request): bool
+    {
+        return self::where('id', $id)
+            ->update([
+                'titulo' => $request->titulo,
+                'descricao' => $request->descricao,
+                'valor' => $request->valor
+            ]);
+    }
 
     public function desativarProduto(int $id): bool
     {
