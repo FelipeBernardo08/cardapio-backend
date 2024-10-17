@@ -22,7 +22,7 @@ class ConteudoCombosController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->conteudosCombos->criarConteudoCombo($request);
                 if (count($response) != 0) {
                     return $this->responseOk($response);
@@ -39,7 +39,7 @@ class ConteudoCombosController extends Controller
     {
         try {
             $me = $this->auth->me();
-            if ($me['fk_userType'] == 1) {
+            if ($me[0]['fk_userType'] == 1) {
                 $response = $this->conteudosCombos->apagarConteudoCombo($id);
                 if ($response) {
                     return response()->json(['msg' => 'Registro apagado com sucesso!'], 200);

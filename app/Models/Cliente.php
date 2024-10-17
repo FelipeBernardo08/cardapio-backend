@@ -21,6 +21,11 @@ class Cliente extends Model
         'end_cep'
     ];
 
+    public function carrinho()
+    {
+        return $this->hasMany(Carrinho::class, 'fk_cliente');
+    }
+
     public function criarCliente(string $nome, int $idUser): array
     {
         return self::create([

@@ -3,11 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\CombosController;
+use App\Http\Controllers\ConteudoCarrinhoController;
 use App\Http\Controllers\ConteudoCombosController;
 use App\Http\Controllers\ProdutoController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +50,9 @@ Route::middleware('jwt.auth')->group(function () {
     //conteudoCombo
     Route::post('criar-conteudo-combo', [ConteudoCombosController::class, 'criarConteudoCombo']);
     Route::delete('apagar-conteudo-combo/{id}', [ConteudoCombosController::class, 'apagarConteudoCombo']);
+
+    //compras
+    Route::post('inserir-produto-carrinho', [ConteudoCarrinhoController::class, 'criarConteudoDoCarrinho']);
 });
 
 //login
@@ -67,4 +69,3 @@ Route::get('ler-combo/{id}', [CombosController::class, 'lerComboPorId']);
 Route::post('criar-cliente', [ClienteController::class, 'criarCliente']);
 Route::get('confirmar-conta/{id}/{email}', [ClienteController::class, 'ativarCadastro']);
 Route::post('recuperar-senha', [ClienteController::class, 'recuperarSenha']);
-Route::post('trocar-senha-token', [ClienteController::class, 'trocarSenhaComToken']);
