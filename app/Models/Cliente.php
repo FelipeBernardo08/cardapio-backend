@@ -18,7 +18,9 @@ class Cliente extends Model
         'end_numero',
         'end_cidade',
         'end_estado',
-        'end_cep'
+        'end_cep',
+        'end_lat',
+        'end_lon'
     ];
 
     public function carrinho()
@@ -32,5 +34,11 @@ class Cliente extends Model
             'nome' => $nome,
             'fk_user' => $idUser
         ])->toArray();
+    }
+
+    public function atualizarCadastro(int $id, object $request): bool
+    {
+        return self::where('id', $id)
+            ->update($request->all());
     }
 }
