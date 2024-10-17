@@ -34,6 +34,14 @@ class ConteudoCarrinho extends Model
         ])->toArray();
     }
 
+    public function removerConteudoCarrinho(int $id, int $idCliente, int $idCarrinho): bool
+    {
+        return self::where('id', $id)
+            ->where('fk_carrinho', $idCarrinho)
+            ->where('fk_cliente', $idCliente)
+            ->delete();
+    }
+
     public function lerProutosPorIdCarrinho(int $id): array
     {
         return self::where('fk_carrinho', $id)
