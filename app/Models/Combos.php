@@ -87,4 +87,14 @@ class Combos extends Model
                 'active' => false
             ]);
     }
+
+    public function updateValueCombo(int $id, array $valores): bool
+    {
+        return self::where('id', $id)
+            ->update([
+                'valor_promocional_dinheiro' => $valores['valorDinheiro'],
+                'valor_promocional_pix' => $valores['valorPix'],
+                'valor_promocional_cartao' => $valores['valorCartao'],
+            ]);
+    }
 }

@@ -45,6 +45,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::put('atualizar-combo/{id}', [CombosController::class, 'updateCombo']);
     Route::put('ativar-combo/{id}', [CombosController::class, 'ativarCombo']);
     Route::put('desativar-combo/{id}', [CombosController::class, 'desativarCombo']);
+    Route::put('atualizar-valor-combo/{id}', [CombosController::class, 'updateValueCombo']);
 
     //conteudoCombo
     Route::post('criar-conteudo-combo', [ConteudoCombosController::class, 'criarConteudoCombo']);

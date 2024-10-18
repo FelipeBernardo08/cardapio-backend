@@ -107,6 +107,37 @@ class CombosController extends Controller
         }
     }
 
+    public function updateValueCombo(int $id): object
+    {
+        try {
+            $responseProductsCombo = $this->combos->lerComboPorId($id);
+            $valores = $this->somarValoresCombo($responseProductsCombo[0]['conteudo_combos']);
+            $responseCombos = $this->combos->updateValueCombo($id, $valores);
+            if ($responseCombos) {
+                return response()->json(['msg' => 'Valores atualizados com sucesso!'], 200);
+            }
+            return $this->error('Erro ao atualizar combos, tente novamente mais tarde!');
+        } catch (Exception $e) {
+            return $this->error($e);
+        }
+    }
+
+    public function somarValoresCombo(array $conteudos): array
+    {
+        $valorTotal = 0;
+        foreach ($conteudos as $conteudo) {
+            $valorTotal += $conteudo['produto']['valor'];
+        }
+        $valorPix = $valorTotal * (1 - 0.03);
+        $valorDinheiro = $valorTotal * (1 - 0.05);
+        $valores = [
+            'valorCartao' => $valorTotal,
+            'valorPix' => $valorPix,
+            'valorDinheiro' => $valorDinheiro
+        ];
+        return $valores;
+    }
+
     public function responseOk($response): object
     {
         return response()->json($response, 200);
