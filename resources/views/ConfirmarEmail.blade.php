@@ -87,7 +87,7 @@
             Equipe Delícias da Cheiloca.
         </p>
 
-        <a href="<?php echo $data['url'] . '/' . $data['id'] . '/' .  $data['email'] ?>">
+        <a href="<?php echo $data['url'] . '/' . $data['id'] . '/' .  $data['email'] . '/' . $data['token'] ?>">
             <button class="botao">
                 Confirmar Cadastro
             </button>

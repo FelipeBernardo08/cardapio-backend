@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\User;
 use App\Models\Carrinho;
 use App\Models\RecuperacoesDeSenha;
+use App\Models\ConfirmacaoContaToken;
 use App\Mail\ConfirmarCriacaoConta;
 use App\Mail\RecuperarSenha;
 use App\Http\Controllers\AuthController;
@@ -19,15 +20,23 @@ class ClienteController extends Controller
     private $user;
     private $carrinho;
     private $recuperacao;
+    private $confirmacaoConta;
     private $auth;
 
-    public function __construct(Cliente $clientes, User $users, Carrinho $carrinhos, RecuperacoesDeSenha $recuperacaoSenha, AuthController $authController)
-    {
+    public function __construct(
+        Cliente $clientes,
+        User $users,
+        Carrinho $carrinhos,
+        RecuperacoesDeSenha $recuperacaoSenha,
+        AuthController $authController,
+        ConfirmacaoContaToken $confirm
+    ) {
         $this->cliente = $clientes;
         $this->user = $users;
         $this->carrinho = $carrinhos;
         $this->recuperacao = $recuperacaoSenha;
         $this->auth = $authController;
+        $this->confirmacaoConta = $confirm;
     }
 
     public function criarCliente(Request $request): object
@@ -37,17 +46,21 @@ class ClienteController extends Controller
             if (count($responseUser) != 0) {
                 $responseCliente = $this->cliente->criarCliente($request->nome, $responseUser['id']);
                 if (count($responseCliente) != 0) {
-                    $this->carrinho->criarCarrinho($responseCliente['id']);
-                    $data = [
-                        'email' => $responseUser['email'],
-                        'id' => $responseUser['id'],
-                        //dev
-                        'url' => 'http://localhost:8000/api/confirmar-conta'
-                        //prod
-                        // 'url' => 'https://deliciasdacheiloca.com.br:8081/api/confirmar-conta'
-                    ];
-                    Mail::to($responseUser['email'])->send(new ConfirmarCriacaoConta($data, 'Confirmar Cadastro'));
-                    return response()->json(['msg' => 'Sucesso! Um e-mail foi enviado para o mesmo e-mail de cadastro, necessário confirmar cadastro para utilizar a plataforma'], 200);
+                    $responseConfirmacao = $this->confirmacaoConta->criarConfirmacaoConta($request);
+                    if (count($responseConfirmacao) != 0) {
+                        $this->carrinho->criarCarrinho($responseCliente['id']);
+                        $data = [
+                            'token' => $responseConfirmacao['token'],
+                            'email' => $responseUser['email'],
+                            'id' => $responseUser['id'],
+                            //dev
+                            'url' => 'http://localhost:8000/api/confirmar-conta'
+                            //prod
+                            // 'url' => 'https://deliciasdacheiloca.com.br:8081/api/confirmar-conta'
+                        ];
+                        Mail::to($responseUser['email'])->send(new ConfirmarCriacaoConta($data, 'Confirmar Cadastro'));
+                        return response()->json(['msg' => 'Sucesso! Um e-mail foi enviado para o mesmo e-mail de cadastro, necessário confirmar cadastro para utilizar a plataforma'], 200);
+                    }
                 }
                 $this->user->deleteUser($responseUser['id']);
                 return $this->error('Erro ao criar cliente.');
@@ -58,14 +71,18 @@ class ClienteController extends Controller
         }
     }
 
-    public function ativarCadastro(int $id, string $email): object
+    public function ativarCadastro(int $id, string $email, string $token): object
     {
         try {
-            $responseUser = $this->user->ativarUsuario($id, $email);
-            if ($responseUser) {
-                return redirect()->route('agradecimento');
+            $responseTokenConfirm = $this->confirmacaoConta->lerConfirmacaoPorEmail($email);
+            if (count($responseTokenConfirm) != 0 && $responseTokenConfirm[0]['token'] == $token) {
+                $responseUser = $this->user->ativarUsuario($id, $email);
+                if ($responseUser) {
+                    return redirect()->route('agradecimento');
+                }
+                return $this->error('Cadastro não pode ser ativo!');
             }
-            return $this->error('Cadastro não pode ser ativo!');
+            return $this->error('Token inválido ou inexistente');
         } catch (Exception $e) {
             return $this->error($e);
         }

@@ -5,34 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RecuperacoesDeSenha extends Model
+class ConfirmacaoContaToken extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'email',
-        'token_confirmacao',
+        'token'
     ];
 
-    public function criarRecuperacao(object $request): array
+    public function criarConfirmacaoConta(object $request): array
     {
         return self::create([
             'email' => $request->email,
-            'token_confirmacao' => $this->gerarToken(),
+            'token' => $this->gerarToken()
         ])->toArray();
     }
 
-    public function lerConfirmacaoPorEmail(object $request): array
+    public function lerConfirmacaoPorEmail(string $email): array
     {
-        return self::where('email', $request->email)
+        return self::where('email', $email)
             ->get()
             ->toArray();
-    }
-
-    public function apagarRecuperacaoAposTrocaDeSenha(int $id): bool
-    {
-        return self::where('id', $id)
-            ->delete();
     }
 
     private function gerarToken(): string
